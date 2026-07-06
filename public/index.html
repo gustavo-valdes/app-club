@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>📚 Club de Lectura — Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<!-- Pantalla de bienvenida / nickname -->
+<div id="nickname-screen" class="screen">
+  <div class="nickname-card">
+    <div class="brand">📖 Club de Lectura</div>
+    <p class="tagline">Salas de chat para hablar de tus libros favoritos.</p>
+    <label for="nickname-input">¿Cómo te llamas?</label>
+    <input id="nickname-input" type="text" maxlength="24" placeholder="Ej. Isa la de Cien Años de Soledad" />
+    <button id="nickname-submit" class="btn btn-primary">Entrar a leer ✨</button>
+  </div>
+</div>
+
+<!-- App principal -->
+<div id="app" class="screen hidden">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button id="lobby-toggle-btn" class="btn btn-mini">☰ Salas</button>
+      <div class="brand">📖 Club de Lectura</div>
+    </div>
+    <div class="me">
+      <span id="my-name-badge" class="chip chip-me"></span>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- Columna izquierda: Lobby (toggleable) -->
+    <aside class="lobby-panel panel" id="lobby-panel">
+      <h2>Salas activas</h2>
+      <div id="room-list" class="room-list"></div>
+
+      <div class="create-room-box">
+        <h3>Crear una sala nueva</h3>
+        <input id="new-room-title" type="text" maxlength="60" placeholder="Título del libro (ej. Rayuela)" />
+        <input id="new-room-password" type="password" maxlength="60" placeholder="Password (opcional)" />
+        <button id="create-room-btn" class="btn btn-secondary">Crear sala 🪶</button>
+      </div>
+    </aside>
+
+    <!-- Columna del medio: Chat (siempre visible) -->
+    <section class="chat-panel panel">
+
+      <div class="tabs" id="room-tabs"></div>
+
+      <div class="room-header" id="room-header">
+        <div>
+          <h2 id="room-title">Salón General</h2>
+          <span id="room-host-info" class="host-info"></span>
+        </div>
+        <div class="room-actions" id="room-actions"></div>
+      </div>
+
+      <div id="pending-close-banner" class="pending-close-banner hidden"></div>
+
+      <div id="video-section" class="video-section hidden">
+        <div class="video-wrap">
+          <div id="yt-player"></div>
+          <div id="video-click-shield" class="video-click-shield"></div>
+        </div>
+        <div class="video-controls">
+          <div class="video-controls-host hidden" id="video-controls-host">
+            <button id="video-play-btn" class="btn btn-mini">▶️ Play</button>
+            <button id="video-pause-btn" class="btn btn-mini">⏸️ Pausa</button>
+          </div>
+          <button id="video-mute-btn" class="btn btn-mini">🔊 Activar sonido (solo para mí)</button>
+        </div>
+      </div>
+
+      <div id="video-set-box" class="video-set-box hidden">
+        <input id="video-url-input" type="text" placeholder="Pega un link de YouTube..." />
+        <button id="video-set-btn" class="btn btn-mini">🎬 Poner video</button>
+      </div>
+
+      <div class="chat-body">
+        <div class="messages" id="messages"></div>
+        <div class="users-strip" id="users-strip"></div>
+      </div>
+
+      <div id="attachment-preview" class="attachment-preview hidden"></div>
+
+      <div class="composer">
+        <div class="emoji-popup hidden" id="emoji-popup"></div>
+        <input id="attach-file-input" type="file" class="hidden" />
+        <button id="attach-btn" class="btn btn-emoji" title="Adjuntar archivo">📎</button>
+        <button id="emoji-btn" class="btn btn-emoji">😊</button>
+        <input id="message-input" type="text" maxlength="500" placeholder="Escribe un mensaje..." autocomplete="off" />
+        <button id="send-btn" class="btn btn-primary">Enviar</button>
+      </div>
+
+    </section>
+
+    <!-- Divisor para cambiar el tamaño del panel de PDF -->
+    <div class="resize-handle hidden" id="pdf-resize-handle" title="Arrastra para cambiar el tamaño"></div>
+
+    <!-- Columna derecha: PDF (toggleable, vista independiente por usuario) -->
+    <aside class="pdf-panel panel hidden" id="pdf-panel">
+      <div class="pdf-panel-header">
+        <h2>📄 PDF</h2>
+        <button id="pdf-panel-close-btn" class="btn btn-mini">✕</button>
+      </div>
+
+      <div id="pdf-set-box" class="pdf-set-box hidden">
+        <input id="pdf-file-input" type="file" accept="application/pdf" />
+        <button id="pdf-upload-btn" class="btn btn-mini">📄 Subir PDF</button>
+        <span id="pdf-upload-status" class="pdf-upload-status"></span>
+      </div>
+
+      <div id="pdf-section" class="pdf-section hidden">
+        <div class="pdf-canvas-wrap">
+          <canvas id="pdf-canvas"></canvas>
+        </div>
+        <div class="pdf-toolbar">
+          <button id="pdf-prev-btn" class="btn btn-mini">⬅️</button>
+          <span id="pdf-page-indicator" class="pdf-page-indicator"></span>
+          <button id="pdf-next-btn" class="btn btn-mini">➡️</button>
+        </div>
+        <div class="pdf-toolbar">
+          <button id="pdf-zoom-out-btn" class="btn btn-mini">🔍 −</button>
+          <span id="pdf-zoom-indicator" class="pdf-zoom-indicator"></span>
+          <button id="pdf-zoom-in-btn" class="btn btn-mini">🔍 +</button>
+          <button id="pdf-zoom-reset-btn" class="btn btn-mini">↺ Ajustar</button>
+        </div>
+        <div id="pdf-filename" class="pdf-filename"></div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- Modal genérico -->
+<div id="modal-backdrop" class="modal-backdrop hidden">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

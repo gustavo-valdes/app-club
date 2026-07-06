@@ -1,0 +1,11 @@
+node_modules/
+npm-debug.log*
+
+# Archivos subidos por los usuarios (PDFs, imágenes, adjuntos del chat).
+# El server los crea de nuevo automáticamente al arrancar (fs.mkdirSync),
+# no hace falta versionarlos ni tienen por qué ir al repo público.
+public/uploads/
+
+# Por si alguna vez agregás variables de entorno o secretos
+.env
+.env.local

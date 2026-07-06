@@ -1,0 +1,17 @@
+{
+  "name": "club-de-lectura-chat",
+  "version": "1.0.0",
+  "description": "Portal de chat para clubes de lectura, con salas por libro, passwords, host, fusion de salas y video de YouTube sincronizado.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.2.0",
+    "socket.io": "^4.7.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
