@@ -2,24 +2,6 @@
 
 Portal de chat para lectores: crea salas nombradas con el título de un libro, chatea con emojis, protege tu sala con password, transfiere el rol de host, fusiona dos salas en una, y comparte un video de YouTube sincronizado para todos.
 
-## Por qué no usamos Netlify
-
-Netlify solo sirve archivos estáticos (HTML/CSS/JS) y funciones que se apagan entre peticiones. Este chat necesita una conexión **en vivo y permanente** (WebSockets vía Socket.io) para que los mensajes, las salas y el video se sincronicen entre todos en tiempo real — algo que Netlify no soporta.
-
-**Alternativa recomendada: [Render](https://render.com)** (plan gratuito). Corre servidores Node.js de forma persistente y soporta WebSockets sin configuración extra.
-
-### Desplegar en Render (gratis)
-
-1. Sube esta carpeta a un repositorio de GitHub.
-2. En Render → **New +** → **Web Service** → conecta tu repo.
-3. Configuración:
-   - **Build Command:** `npm install`
-   - **Start Command:** `npm start`
-   - **Plan:** Free
-4. Deploy. Render te da una URL tipo `https://tu-app.onrender.com` — esa es tu app en vivo.
-
-(Alternativas equivalentes: [Railway](https://railway.app) o [Fly.io](https://fly.io), ambas también soportan WebSockets gratis para proyectos pequeños.)
-
 ## Correr localmente
 
 ```bash
