@@ -337,15 +337,15 @@ h1, h2, h3, .brand {
 
 @media (max-width: 1100px) {
   .layout { flex-wrap: wrap; height: auto; }
-  .lobby-panel, .pdf-panel { width: 100% !important; flex: 1 1 100% !important; max-height: 340px; }
+  /* max-height en vh (no un px fijo) para que el panel de salas tenga
+     espacio de sobra en cualquier ancho angosto, no solo en celulares. */
+  .lobby-panel, .pdf-panel { width: 100% !important; flex: 1 1 100% !important; max-height: 62vh; }
+  .room-list { min-height: 220px; }
   .chat-panel { flex: 1 1 100%; min-height: 480px; }
   .resize-handle { display: none; } /* en pantallas angostas los paneles se apilan, no se arrastran */
 }
 
-/* Celulares en vertical (p. ej. iPhone): la lista de salas activas queda muy
-   apretada con el max-height fijo de arriba, así que acá le damos su propio
-   espacio, mucho más generoso, basado en el alto real de la pantalla. */
+/* Celulares en vertical (p. ej. iPhone): un poco más de espacio todavía. */
 @media (max-width: 640px) {
   .lobby-panel { max-height: 68vh; }
-  .room-list { min-height: 220px; }
 }
