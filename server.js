@@ -432,6 +432,33 @@ io.on('connection', (socket) => {
     broadcastLobby();
   });
 
+  // El host elimina la sala que creó, de inmediato (sin esperar el timer AFK).
+  socket.on('room:delete', ({ roomId }, cb) => {
+    const room = rooms.get(roomId);
+    if (!room || room.isGeneral || room.hostId !== socket.id) {
+      return cb && cb({ ok: false, error: 'Solo el host puede eliminar esta sala.' });
+    }
+
+    if (room.closeTimer) clearTimeout(room.closeTimer);
+    room.closeTimer = null;
+
+    // Avisamos ANTES de sacar a la gente del room de socket.io: si lo hiciéramos
+    // después, nadie recibiría el evento (io.to(roomId) ya no alcanzaría a nadie).
+    io.to(roomId).emit('room:closed', { roomId, reason: 'host_deleted', title: room.title });
+
+    for (const sid of room.users.keys()) {
+      const s = io.sockets.sockets.get(sid);
+      if (s) {
+        s.leave(roomId);
+        s.data.rooms.delete(roomId);
+      }
+    }
+
+    rooms.delete(roomId);
+    broadcastLobby();
+    cb && cb({ ok: true });
+  });
+
   socket.on('room:set-afk', ({ roomId, minutes }) => {
     const room = rooms.get(roomId);
     if (!room || room.isGeneral || room.hostId !== socket.id) return;

@@ -178,6 +178,8 @@ function initApp(name) {
     if (state.activeRoomId === roomId) state.activeRoomId = 'general';
     const msg = reason === 'host_timeout'
       ? `🚪 La sala "${title}" se cerró: el host no volvió a tiempo.`
+      : reason === 'host_deleted'
+      ? `🗑️ La sala "${title}" fue eliminada por el host.`
       : `🚪 La sala "${title}" se cerró.`;
     toast(msg);
     renderTabs();
@@ -458,6 +460,17 @@ function renderRoomView() {
       const mergeBtn = el('button', 'btn btn-mini', '🔗 Fusionar sala');
       mergeBtn.addEventListener('click', () => openMergeModal(room));
       actions.appendChild(mergeBtn);
+
+      const deleteBtn = el('button', 'btn btn-mini btn-danger', '🗑️ Eliminar sala');
+      deleteBtn.addEventListener('click', () => {
+        if (!confirm(`¿Eliminar la sala "${room.title}" para todos? Esta acción no se puede deshacer.`)) return;
+        state.socket.emit('room:delete', { roomId: room.id }, (res) => {
+          if (!res || !res.ok) {
+            toast(res && res.error ? res.error : 'No se pudo eliminar la sala.');
+          }
+        });
+      });
+      actions.appendChild(deleteBtn);
 
       const afkBox = el('div', 'afk-box');
       afkBox.innerHTML = `<label>⏳ Si me desconecto, esperar</label>`;

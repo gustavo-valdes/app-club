@@ -55,6 +55,8 @@ h1, h2, h3, .brand {
 .btn-secondary { background: var(--pastel-mint); color: var(--brown-darkest); }
 .btn-mini { background: var(--pastel-butter); color: var(--brown-darkest); padding: 7px 12px; font-size: 0.82rem; }
 .btn-emoji { background: var(--pastel-pink); border-radius: 50%; width: 42px; height: 42px; padding: 0; font-size: 1.2rem; }
+.btn-danger { background: #f6b8b8; color: #6b1f1f; }
+.btn-danger:hover { background: #f2a0a0; }
 
 .chip {
   display: inline-block;
