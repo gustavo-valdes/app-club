@@ -341,3 +341,11 @@ h1, h2, h3, .brand {
   .chat-panel { flex: 1 1 100%; min-height: 480px; }
   .resize-handle { display: none; } /* en pantallas angostas los paneles se apilan, no se arrastran */
 }
+
+/* Celulares en vertical (p. ej. iPhone): la lista de salas activas queda muy
+   apretada con el max-height fijo de arriba, así que acá le damos su propio
+   espacio, mucho más generoso, basado en el alto real de la pantalla. */
+@media (max-width: 640px) {
+  .lobby-panel { max-height: 68vh; }
+  .room-list { min-height: 220px; }
+}
